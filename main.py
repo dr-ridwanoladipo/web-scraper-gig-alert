@@ -2,6 +2,7 @@ import requests
 import selectorlib
 import smtplib, ssl
 import os
+import time
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -52,19 +53,21 @@ def read_extracted():
 
 
 if __name__ == "__main__":
-    scraped = scrape(URL)
-    extracted = extract(scraped)
-    print(extracted)
+    while True:
+        scraped = scrape(URL)
+        extracted = extract(scraped)
+        print(extracted)
 
-    content = read_extracted()
-    if extracted != "No upcoming tours":
-        if extracted not in content:
-            store(extracted)
-            # send_email(message=f"Hey, new event was found: {extracted}")
-            send_email(message=f"""\
-Subject: New email from oladiporidwan10@gmail.com
+        content = read_extracted()
+        if extracted != "No upcoming tours":
+            if extracted not in content:
+                store(extracted)
+                # send_email(message=f"Hey, new event was found: {extracted}")
+                send_email(message=f"""\
+Subject: New email from Pythonprogrammer100
 
-From: Python programmer
+From: oladiporidwan10@gmail.com
 {extracted}
 """)
+        time.sleep(10)
 
